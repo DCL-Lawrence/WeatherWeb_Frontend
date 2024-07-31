@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taiwan weather</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Taiwan weather</h1>
+    <div id="data-container"></div>
+
+    <script>
+        async function fetchData() {
+            try {
+                const response = await fetch('http://192.168.1.103:8000/taiwan/');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                displayData(data);
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('data-container').innerHTML = 'Error fetching data';
+            }
+        }
+
+        function displayData(data) {
+            const tableContainer = document.getElementById('data-container');
+            tableContainer.innerHTML = '';
+
+            // Create table element
+            const table = document.createElement('table');
+            table.innerHTML = '';
+
+            // Create table header
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+
+            thead.innerHTML = '';
+            headerRow.innerHTML = '';
+
+            const th1 = document.createElement('th');
+            th1.textContent = '縣市';
+            headerRow.appendChild(th1);
+
+            const th2 = document.createElement('th');
+            th2.textContent = '氣溫';
+            headerRow.appendChild(th2);
+
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            // Create table body
+            const tbody = document.createElement('tbody');
+            tbody.innerHTML = '';
+
+            district = data['district'];
+            temperature = data['temperature']
+
+            for (i = 0; i < district.length; i++) {
+                const row = document.createElement('tr');
+                row.innerHTML = '';
+
+                const td1 = document.createElement('td');
+                td1.textContent = district[i];
+                row.appendChild(td1);
+
+                const td2 = document.createElement('td');
+                td2.textContent = temperature[i][0] + '~' + temperature[i][1];
+                row.appendChild(td2);
+
+                tbody.appendChild(row);
+                table.appendChild(tbody);
+            }
+            
+            // Add table to the container
+            tableContainer.appendChild(table);
+        }
+
+        // Initial display
+        fetchData();
+
+        // Auto-update every 5 seconds
+        setInterval(fetchData, 5000);
+    </script>
+</body>
+</html>

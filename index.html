@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global weather web</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .object-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .object-item {
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Country List</h1>
+    <ul id="objectList" class="object-list"></ul>
+
+    <script>
+        // Add new region with name and file path here.
+        const country = [{ name: "Taiwan", path: "./taiwan.html" },
+                        { name: "USA", path: "./us.html" }];
+
+        function displayObjects() {
+            const objectList = document.getElementById('objectList');
+            objectList.innerHTML = '';
+
+            country.forEach(object => {
+                const listItem = document.createElement('li');
+                listItem.className = 'object-item';
+                listItem.innerHTML = `
+                    <h2><a href=${object.path}>${object.name}</a></h2>
+                `;
+                objectList.appendChild(listItem);
+            });
+        }
+
+        // Call the function to display objects when the page loads
+        displayObjects();
+    </script>
+</body>
+</html>
