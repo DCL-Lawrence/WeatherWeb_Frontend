@@ -41,7 +41,8 @@
     <script>
         async function fetchData() {
             try {
-                const response = await fetch('http://10.98.136.182:8000/taiwan/');
+                // Use specific domain name of backend server or K8S services components.
+                const response = await fetch('http://www.example.com/taiwan/');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
